@@ -1,6 +1,7 @@
-# Ignore build folder and generated files
-ALU/build/
-*.exe
-*.obj
+# Ignore build output
+/build/
+/*.exe
 *.o
+*.obj
 *.log
+
