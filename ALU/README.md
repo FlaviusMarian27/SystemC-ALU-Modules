@@ -26,5 +26,6 @@ cd build
 cmake -G "MinGW Makefiles" ..
 mingw32-make
 ./main.exe
+```
 
 > 🚧 This project is under active development. New pages and future projects will be added soon!
