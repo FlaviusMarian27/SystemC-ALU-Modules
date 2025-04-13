@@ -1,17 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
-project(SystemC_ALU_Modules)
+project(ALU_Modules)
 
-# Set standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-# Include SystemC headers and link lib
+# Include path către SystemC
 include_directories("C:/systemc-install/include")
 link_directories("C:/systemc-install/lib")
 
-# Add executable
-add_executable(main 
-    ALU/main.cpp
+# Executabilul și fișierele sursă
+add_executable(main
+    main.cpp
+    rca32.h
+    Subtractor32.h
+    booth_multiplier.h
+    shift_unit.h
 )
 
-# Link SystemC
+# Link cu SystemC
 target_link_libraries(main systemc)
