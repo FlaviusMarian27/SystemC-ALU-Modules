@@ -11,6 +11,6 @@ This repository contains SystemC modules for arithmetic operations:
 - `main.cpp` – testbench & simulation entry
 - Header files for each arithmetic unit
 
-> 🚧 This website is under active development. New pages and future projects will be added soon!
+> 🚧 This project is under active development. New pages and future projects will be added soon!
 
 
