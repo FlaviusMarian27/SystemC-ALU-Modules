@@ -29,3 +29,10 @@ mingw32-make
 ```
 
 > 🚧 This project is under active development. New pages and future projects will be added soon!
+
+### 👥 Contributors
+
+- [@IoanaAdrian](https://github.com/IoanaAdrian)
+- [@Dragos-AndreiIsfan](https://github.com/Dragos-AndreiIsfan)
+- [@FlaviusMarian27](https://github.com/FlaviusMarian27)
+- [@Mate44x05](https://github.com/Mate44x05)
