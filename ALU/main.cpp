@@ -129,7 +129,7 @@ int sc_main(int argc, char* argv[]) {
 
 
     // ========== Shiftare ==========
-    cout << "\n=== Shiftare Stanga și Dreapta ===" << endl;
+    cout << "\n=== Shiftare Stanga si Dreapta ===" << endl;
     shift_input.write(8); 
     shift_amount.write(2);
     sc_start(1, SC_NS);
