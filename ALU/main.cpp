@@ -36,10 +36,12 @@ int sc_main(int argc, char* argv[]) {
     mul.multiplier(multiplier);
     mul.product(product);
 
-    // === Shift Unit ===
+    // Semnale pentru Shift Unit
     sc_signal<sc_int<32>> shift_input;
     sc_signal<sc_uint<5>> shift_amount;
     sc_signal<sc_int<32>> shift_left_result, shift_right_result;
+
+    // Instantiere Shift Unit
     ShiftUnit<32, 5> shift("shift_unit");
     shift.numberToBeShifted(shift_input);
     shift.positionsToShift(shift_amount);
@@ -125,17 +127,20 @@ int sc_main(int argc, char* argv[]) {
         << ", Multiplier = " << multiplier.read()
         << ", Product = " << product.read() << endl;
 
+
     // ========== Shiftare ==========
-    cout << "\n=== Shiftare stanga si dreapta ===" << endl;
-    shift_input.write(8);      // 000...1000
+    cout << "\n=== Shiftare Stanga și Dreapta ===" << endl;
+    shift_input.write(8); 
     shift_amount.write(2);
     sc_start(1, SC_NS);
-    cout << shift_input.read() << " << 2 = " << shift_left_result.read() << endl;
+    cout << "8 << 2 = " << shift_left_result.read() << endl;
+    //1000 -> 100000
 
-    shift_input.write(-32);    // 111...0000
-    shift_amount.write(3);
+    shift_input.write(-32); // 111...0000
+    shift_amount.write(3); 
+
     sc_start(1, SC_NS);
-    cout << shift_input.read() << " >> 3 = " << shift_right_result.read() << endl;
+    cout << "-32 >> 3 = " << shift_right_result.read() << endl;
 
     return 0;
 }

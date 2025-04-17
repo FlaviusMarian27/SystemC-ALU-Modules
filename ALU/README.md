@@ -28,7 +28,7 @@ mingw32-make
 ./main.exe
 ```
 
-> 🚧 This project is under active development. New pages and future projects will be added soon!
+> 🚧 This project is under active development. New functions and future projects will be added soon!
 
 ### 👥 Contributors
 

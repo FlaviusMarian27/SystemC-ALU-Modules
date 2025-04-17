@@ -14,11 +14,30 @@ SC_MODULE(ShiftUnit) {
         sc_int<nrBits> value = numberToBeShifted.read();
         sc_uint<positionsToShiftBits> shift = positionsToShift.read();
 
-        // Left shift
-        shiftedLeft.write(value << shift);
+        sc_int<nrBits> leftResult = 0;
+        sc_int<nrBits> rightResult = 0;
 
-        // Arithmetic right shift (preserve sign)
-        shiftedRight.write(value >> shift);
+        //pentru shiftarea la stanga
+        for( int i = nrBits - 1 ; i >= 0 ; i-- ){
+            if( i >= shift ){
+                leftResult[i] = value[i - shift];
+            }else{
+                leftResult[i] = 0;
+            }
+        }
+
+        //shiftare la dreapta
+        for( int i = 0 ; i < nrBits ; i++ ){
+            if( i + shift < nrBits ){
+                rightResult[i] = value[i + shift];
+            }else{
+                rightResult[i] = value[nrBits - 1];//bit de semn
+            }
+        }
+
+        //scriem rezultatul iesirilor
+        shiftedLeft.write(leftResult);
+        shiftedRight.write(rightResult);
     }
 
     SC_CTOR(ShiftUnit) {
