@@ -13,7 +13,13 @@ add_executable(main
     rca32.h
     Subtractor32.h
     booth_multiplier.h
+    SRTDivider.h
     shift_unit.h
+    bitwise_and.h
+    bitwise_or.h
+    bitwise_xor.h
+    bitwise_not.h
+    Mux8_32.h
 )
 
 # Link cu SystemC

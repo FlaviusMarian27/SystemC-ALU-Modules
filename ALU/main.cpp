@@ -3,32 +3,31 @@
 #include "Subtractor32.h"
 #include "booth_multiplier.h"
 #include "shift_unit.h"
+#include "bitwise_and.h"
+#include "bitwise_or.h"
+#include "bitwise_xor.h"
+#include "bitwise_not.h"
 
 int sc_main(int argc, char* argv[]) {
-    sc_signal<sc_int<32>> A;
-    sc_signal<sc_int<32>> B;
+    // Semnale pentru adunare și scădere (signed)
+    sc_signal<sc_int<32>> A, B;
     sc_signal<bool> Cin;
-    sc_signal<sc_int<32>> S;
-    sc_signal<bool> Cout;
+    sc_signal<sc_int<32>> S_add;
+    sc_signal<bool> Cout_add;
 
-    // Instantiem adder-ul
+    // Instanțiere adder
     RCA32 rca("rca");
-    rca.A(A);
-    rca.B(B);
-    rca.Cin(Cin);
-    rca.S(S);
-    rca.Cout(Cout);
+    rca.A(A); rca.B(B); rca.Cin(Cin);
+    rca.S(S_add); rca.Cout(Cout_add);
 
+    // Semnale pentru scădere
     sc_signal<sc_int<32>> S_sub;
     sc_signal<bool> Cout_sub;
-    
     Subtractor32 sub("subtractor");
-    sub.A(A);
-    sub.B(B);
-    sub.S(S_sub);
-    sub.Cout(Cout_sub);
+    sub.A(A); sub.B(B);
+    sub.S(S_sub); sub.Cout(Cout_sub);
 
-    // === Booth Multiplier ===
+    // Înmultire Booth (signed)
     sc_signal<sc_int<32>> multiplicand, multiplier;
     sc_signal<sc_int<64>> product;
     BoothMultiplier<32> mul("booth");
@@ -36,111 +35,100 @@ int sc_main(int argc, char* argv[]) {
     mul.multiplier(multiplier);
     mul.product(product);
 
-    // Semnale pentru Shift Unit
-    sc_signal<sc_int<32>> shift_input;
-    sc_signal<sc_uint<5>> shift_amount;
-    sc_signal<sc_int<32>> shift_left_result, shift_right_result;
+    // Shift unit (signed)
+    sc_signal<sc_int<32>> shift_in;
+    sc_signal<sc_uint<5>> shift_amt;
+    sc_signal<sc_int<32>> shl_res, shr_res;
+    ShiftUnit<32,5> shift("shift_unit");
+    shift.numberToBeShifted(shift_in);
+    shift.positionsToShift(shift_amt);
+    shift.shiftedLeft(shl_res);
+    shift.shiftedRight(shr_res);
 
-    // Instantiere Shift Unit
-    ShiftUnit<32, 5> shift("shift_unit");
-    shift.numberToBeShifted(shift_input);
-    shift.positionsToShift(shift_amount);
-    shift.shiftedLeft(shift_left_result);
-    shift.shiftedRight(shift_right_result);
+    // --- Bitwise (unsigned) ---
+    sc_signal<sc_uint<32>> A_u, B_u;
+    sc_signal<sc_uint<32>> y_and, y_or, y_xor, y_not;
 
-    //==============================ADD================================
-    cout << "Adunare:" << endl;
-    A.write(648);
-    B.write(4);
-    Cin.write(0);
+    BitwiseAnd<32> bw_and("bw_and");
+    bw_and.A(A_u); bw_and.B(B_u); bw_and.Y(y_and);
 
-    sc_start(1, SC_NS); // rulam simularea
+    BitwiseOr<32> bw_or("bw_or");
+    bw_or.A(A_u);  bw_or.B(B_u);  bw_or.Y(y_or);
 
-    // Afisam rezultatul
-    cout << "A = " << A.read() << "\t" 
-    << "B = " << B.read() << "\t"
-    << "Cin = " << Cin.read() << "\t"
-    << "S = " << S.read() << "\t"
-    << "Cout = " << Cout.read() << endl;
+    BitwiseXor<32> bw_xor("bw_xor");
+    bw_xor.A(A_u); bw_xor.B(B_u); bw_xor.Y(y_xor);
 
-    A.write(5);
-    B.write(6);
-    Cin.write(1);
+    BitwiseNot<32> bw_not("bw_not");
+    bw_not.A(A_u); bw_not.Y(y_not);
 
-    sc_start(1, SC_NS); 
-
-    cout << "A = " << A.read() << "\t" 
-    << "B = " << B.read() << "\t"
-    << "Cin = " << Cin.read() << "\t"
-    << "S = " << S.read() << "\t"
-    << "Cout = " << Cout.read() << endl;   
-
-    A.write(4294967295);
-    B.write(1);
-    Cin.write(1);
-
-    sc_start(1, SC_NS); 
-
-    cout << "A = " << A.read() << "\t" 
-    << "B = " << B.read() << "\t"
-    << "Cin = " << Cin.read() << "\t"
-    << "S = " << S.read() << "\t"
-    << "Cout = " << Cout.read() << endl;    
-    
-    //=============================SUB======================================
-    cout << endl;
-    cout << "Scadere:" << endl;
-
-    A.write(20);
-    B.write(5);
-
+    //============================== ADD ==============================
+    cout << "=== ADD ===" << endl;
+    A.write(648); B.write(4); Cin.write(0);
     sc_start(1, SC_NS);
-    cout << "A = " << A.read()
-         << ", B = " << B.read()
-         << ", S = " << S_sub.read()
-         << ", Cout = " << Cout_sub.read() << endl;
+    cout << "A=" << A.read()
+         << " B=" << B.read()
+         << " Cin=" << Cin.read()
+         << " S=" << S_add.read()
+         << " Cout=" << Cout_add.read()
+         << endl;
 
-    A.write(45);
-    B.write(15);
-
+    A.write(5); B.write(6); Cin.write(1);
     sc_start(1, SC_NS);
-    cout << "A = " << A.read()
-         << ", B = " << B.read()
-         << ", S = " << S_sub.read()
-         << ", Cout = " << Cout_sub.read() << endl;
+    cout << "A=" << A.read()
+         << " B=" << B.read()
+         << " Cin=" << Cin.read()
+         << " S=" << S_add.read()
+         << " Cout=" << Cout_add.read()
+         << endl;
 
-    // ========== Inmultire ==========
-    cout << "\n=== Inmultire (BoothMultiplier): ===" << endl;
-    multiplicand.write(7);
-    multiplier.write(-3);
-
+    //============================= SUB ================================
+    cout << "\n=== SUBTRACT ===" << endl;
+    A.write(20); B.write(5);
     sc_start(1, SC_NS);
-    cout << "Multiplicand = " << multiplicand.read()
-        << ", Multiplier = " << multiplier.read()
-        << ", Product = " << product.read() << endl;
+    cout << "A=" << A.read()
+         << " B=" << B.read()
+         << " S=" << S_sub.read()
+         << " Cout=" << Cout_sub.read()
+         << endl;
 
-    multiplicand.write(-20);
-    multiplier.write(-11);
-
+    A.write(45); B.write(15);
     sc_start(1, SC_NS);
-    cout << "Multiplicand = " << multiplicand.read()
-        << ", Multiplier = " << multiplier.read()
-        << ", Product = " << product.read() << endl;
+    cout << "A=" << A.read()
+         << " B=" << B.read()
+         << " S=" << S_sub.read()
+         << " Cout=" << Cout_sub.read()
+         << endl;
 
-
-    // ========== Shiftare ==========
-    cout << "\n=== Shiftare Stanga si Dreapta ===" << endl;
-    shift_input.write(8); 
-    shift_amount.write(2);
+    //========================== MULTIPLY =============================
+    cout << "\n=== MULTIPLY (Booth) ===" << endl;
+    multiplicand.write(7); multiplier.write(-3);
     sc_start(1, SC_NS);
-    cout << "8 << 2 = " << shift_left_result.read() << endl;
-    //1000 -> 100000
+    cout << "M='" << multiplicand.read()
+         << "' * '" << multiplier.read()
+         << "' = " << product.read()
+         << endl;
 
-    shift_input.write(-32); // 111...0000
-    shift_amount.write(3); 
-
+    //=========================== SHIFT ===============================
+    cout << "\n=== SHIFT ===" << endl;
+    shift_in.write(8); shift_amt.write(2);
     sc_start(1, SC_NS);
-    cout << "-32 >> 3 = " << shift_right_result.read() << endl;
+    cout << "8 << 2 = " << shl_res.read() << endl;
+
+    shift_in.write(-32); shift_amt.write(3);
+    sc_start(1, SC_NS);
+    cout << "-32 >> 3 = " << shr_res.read() << endl;
+
+    //========================= BITWISE ===============================
+    cout << "\n=== BITWISE ===" << endl;
+    A_u.write(13);
+    B_u.write(10);
+    sc_start(1, SC_NS);
+
+    cout << "A=13 B=10" << endl;
+    cout << "A & B = " << y_and.read() << endl;  // should be 8
+    cout << "A | B = " << y_or.read()  << endl;  // should be 15
+    cout << "A ^ B = " << y_xor.read() << endl;  // should be 7
+    cout << "~A    = " << y_not.read() << endl;  // 4294967282
 
     return 0;
 }
