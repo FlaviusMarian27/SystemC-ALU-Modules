@@ -79,21 +79,38 @@ The provided `main.cpp` drives the `ALU` over a set of test vectors:
 Sample output:
 
 ```
+        SystemC 3.0.1-Accellera --- Mar 29 2025 20:05:04
+        Copyright (c) 1996-2024 by all Contributors,
+        ALL RIGHTS RESERVED
+
 === ADD ===
 A=648 B=4 Cin=0 => S=652 Cout=0
-A=5 B=6 Cin=1 => S=12 Cout=1
+A=5 B=6 Cin=1 => S=12 Cout=0
 
 === SUBTRACT ===
-A=20 B=5 => S=15 Cout=0
-... etc ...
+A=20 B=5 => S=15 Cout=1
+A=45 B=15 => S=30 Cout=1
+
+=== MULTIPLY (Booth) ===
+A=7 * B=-3 => S=-21
+A=-8 * B=-4 => S=32
+A=7 * B=8 => S=56
 
 === DIVIDE ===
 Dividend=1234 Divisor=56 => Quotient=22 Remainder=2
-...
+Dividend=-500 Divisor=13 => Quotient=-38 Remainder=-6
 
 === BITWISE AND ===
 A=13 B=10 => S=8
-...
+
+=== BITWISE OR ===
+A=13 B=10 => S=15
+
+=== BITWISE XOR ===
+A=13 B=10 => S=7
+
+=== BITWISE NOT ===
+A=13 => S=-14
 ```
 
 ---
