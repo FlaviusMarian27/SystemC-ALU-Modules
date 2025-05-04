@@ -14,6 +14,7 @@ SC_MODULE(SRT2Divider) {
         bool dividend_neg = dividend.read() < 0;
         bool divisor_neg  = divisor.read() < 0;
 
+        //Convertim in valorile absolute folosind complement de 2
         sc_int<16> A;
         if (dividend_neg) {
             A = ~dividend.read() + 1;
@@ -27,12 +28,12 @@ SC_MODULE(SRT2Divider) {
         } else {
             raw_divisor = divisor.read();
         }
-        sc_uint<16> B = raw_divisor.to_uint();  // conversie explicită
+        sc_uint<16> B = raw_divisor.to_uint();  // conversie explicita
 
         // === SRT2 core logic ===
         sc_int<17> P = 0;
 
-        // Numără zerourile de la început pentru normalizare
+        // Numara zerourile de la inceput pentru normalizare
         int K = 0;
         for (int j = 15; j >= 0; --j) {
             if ((B >> j) & 1) break;
