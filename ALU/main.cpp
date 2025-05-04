@@ -7,8 +7,10 @@
 #include "bitwise_or.h"
 #include "bitwise_xor.h"
 #include "bitwise_not.h"
+#include "SRT2Divider.h"
 
 int sc_main(int argc, char* argv[]) {
+
     // Semnale pentru adunare și scădere (signed)
     sc_signal<sc_int<32>> A, B;
     sc_signal<bool> Cin;
@@ -60,6 +62,15 @@ int sc_main(int argc, char* argv[]) {
 
     BitwiseNot<32> bw_not("bw_not");
     bw_not.A(A_u); bw_not.Y(y_not);
+
+     //=============SRT2============
+     sc_signal<sc_int<16>> dividend_signal, divisor_signal, quotient_signal, remainder_signal;
+     SRT2Divider srt2("srt2");
+
+     srt2.dividend(dividend_signal);
+     srt2.divisor(divisor_signal);
+     srt2.quotient(quotient_signal);
+     srt2.remainder(remainder_signal);
 
     //============================== ADD ==============================
     cout << "=== ADD ===" << endl;
@@ -130,5 +141,25 @@ int sc_main(int argc, char* argv[]) {
     cout << "A ^ B = " << y_xor.read() << endl;  // should be 7
     cout << "~A    = " << y_not.read() << endl;  // 4294967282
 
+    cout << "\n=== SRT2 Divider ===" << endl;
+     // === Test 1 ===
+     dividend_signal.write(1234);
+     divisor_signal.write(56);
+
+     sc_start(1, SC_NS);
+     cout << "Dividend = " << dividend_signal.read()
+          << ", Divisor = " << divisor_signal.read()
+          << " => Quotient = " << quotient_signal.read()
+          << ", Remainder = " << remainder_signal.read() << endl;
+
+     // === Test 2 ===
+     dividend_signal.write(-500);
+     divisor_signal.write(13);
+
+     sc_start(1, SC_NS);
+     cout << "Dividend = " << dividend_signal.read()
+          << ", Divisor = " << divisor_signal.read()
+          << " => Quotient = " << quotient_signal.read()
+          << ", Remainder = " << remainder_signal.read() << endl;
     return 0;
 }

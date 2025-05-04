@@ -13,7 +13,7 @@ add_executable(main
     rca32.h
     Subtractor32.h
     booth_multiplier.h
-    SRTDivider.h
+    SRT2Divider.h
     shift_unit.h
     bitwise_and.h
     bitwise_or.h
