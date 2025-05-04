@@ -97,26 +97,6 @@ A=13 B=10 => S=8
 ```
 
 ---
-## 📁 Project Structure
-
-- main.cpp – testbench & simulation entry
-- Header files for each arithmetic unit
-
-## 🛠️ Build & Run
-
-### Prerequisites
-- [SystemC library](https://accellera.org/downloads/standards/systemc) installed and configured
-- `CMake` and `MinGW` (or another compiler) available in PATH
-
-### Steps
-
-```bash
-mkdir build
-cd build
-cmake -G "MinGW Makefiles" ..
-mingw32-make
-./main.exe
-```
 
 > 🚧 This project is under active development. New functions and future projects will be added soon!
 
