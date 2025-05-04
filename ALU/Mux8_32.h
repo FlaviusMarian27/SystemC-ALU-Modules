@@ -11,14 +11,15 @@ SC_MODULE(Mux8_32) {
 
     void do_mux() {
         switch (sel.read()) {
-            case 0: y.write(d0.read()); break;
-            case 1: y.write(d1.read()); break;
-            case 2: y.write(d2.read()); break;
-            case 3: y.write(d3.read()); break;
-            case 4: y.write(d4.read()); break;
-            case 5: y.write(d5.read()); break;
-            case 6: y.write(d6.read()); break;
-            default: y.write(d7.read()); break;  // 7: SHR
+            case 0: y.write(d0.read()); break; // ADD
+            case 1: y.write(d1.read()); break; // SUB
+            case 2: y.write(d2.read()); break; // MUL
+            case 3: y.write(d3.read()); break; // DIV
+            case 4: y.write(d4.read()); break; // AND
+            case 5: y.write(d5.read()); break; // OR
+            case 6: y.write(d6.read()); break; // XOR
+            case 7: y.write(d7.read()); break; // NOT
+            default: y.write(0); break;
         }
     }
 

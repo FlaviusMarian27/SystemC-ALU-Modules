@@ -20,6 +20,7 @@ add_executable(main
     bitwise_xor.h
     bitwise_not.h
     Mux8_32.h
+    ALU_mux.h
 )
 
 # Link cu SystemC
