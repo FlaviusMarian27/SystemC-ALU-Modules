@@ -1,7 +1,5 @@
 # ⚙️ SystemC ALU Modules
 
-# ⚙️ SystemC ALU Modules
-
 A collection of reusable **SystemC** modules implementing fundamental ALU operations, combined into a parameterizable 8‐operation ALU:
 
 - ➕ **RCA32**: 32‐bit ripple‐carry adder with carry‐in and carry‐out ports (`rca32.h`).
